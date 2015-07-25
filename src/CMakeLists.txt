@@ -1,0 +1,12 @@
+add_library(
+    demeter-db
+    db.cpp
+)
+target_link_libraries(
+    demeter-db
+    atlas-com-db
+)
+add_library(
+    demeter-server-lib
+    router.cpp
+)
