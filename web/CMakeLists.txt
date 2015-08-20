@@ -4,4 +4,5 @@ atlas_add_web_library(
     TARGET demeter-web
     SOURCES
         index.html
+        index.js
 )

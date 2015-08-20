@@ -10,3 +10,8 @@ add_library(
     demeter-server-lib
     router.cpp
 )
+target_link_libraries(
+    demeter-server-lib
+    demeter-db
+    ${CMAKE_CURRENT_BINARY_DIR}/../web/static.a
+)

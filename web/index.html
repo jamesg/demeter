@@ -1,0 +1,111 @@
+<html>
+<meta charset="UTF-8">
+
+<head>
+
+<title>Recipes</title>
+<link href="/atlas/css/defaults.css" rel="stylesheet" type="text/css" media="all"></link>
+<link href="/atlas/css/form.css" rel="stylesheet" type="text/css" media="all"></link>
+<link href="/atlas/css/grid.css" rel="stylesheet" type="text/css" media="all"></link>
+<link href="/atlas/css/list.css" rel="stylesheet" type="text/css" media="all"></link>
+<link href="/atlas/css/modal.css" rel="stylesheet" type="text/css" media="all"></link>
+<link href="/atlas/css/navigation.css" rel="stylesheet" type="text/css" media="all"></link>
+<link href="/atlas/css/teletype-theme.css" rel="stylesheet" type="text/css" media="all"></link>
+<link
+    href="/atlas/open-iconic/font/css/open-iconic.css"
+    rel="stylesheet"
+    type="text/css"
+    media="all">
+</link>
+
+<style type="text/css">
+
+.recipe-root-ingredient {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.recipe-details {
+
+}
+
+.ingredient {
+    width: auto;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.ingredient:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.ingredient-components {
+    float: left;
+    padding-right: 20px;
+    width: 50%;
+}
+
+.ingredient-details {
+    float: left;
+    padding-right: 0;
+    width: 50%;
+}
+
+.button-delete {
+    background-color: red;
+    color: white;
+}
+
+.button-create {
+    background-color: green;
+    color: white;
+}
+
+.button-primary {
+    background-color: blue;
+    color: white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="modal-container" class="modal-container"></div>
+<ul class="navigation navigation-pages">
+    <li>
+        <span class="oi" data-glyph="home" aria-hidden="true"> </span>
+        <a href="">Home</a>
+    </li>
+</ul>
+<ul id="navigation" class="navigation navigation-breadcrumbs"></ul>
+<div id="template-content" class="content"></div>
+
+<script type="text/template" id="homepage-template">
+<h2>Recipes</h2>
+<div class="button-box">
+    <button type="button" name="new-recipe" class="button-create">
+        <span class="oi" data-glyph="plus" aria-hidden="true"></span>
+        New Recipe
+    </button>
+</div>
+<ul name="recipes" class="action-list"></ul>
+</script>
+
+<script type="text/javascript" src="/atlas/underscore.js"></script>
+<script type="text/javascript" src="/atlas/backbone.js"></script>
+<script type="text/javascript" src="/atlas/jquery.js"></script>
+<script type="text/javascript" src="/atlas/stacked_application.js"></script>
+<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript">
+Backbone.$ = $;
+var gApplication = new StackedApplication(HomePage);
+gApplication.goHome();
+</script>
+
+</body>
+
+</html>

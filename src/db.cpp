@@ -41,8 +41,8 @@ namespace
         styx::list components = hades::join<demeter::ingredient, demeter::component_of>(
             conn,
             hades::where(
-                "ingredient.ingredient_id = component_of.base_ingredient_id "
-                "AND component_of.result_ingredient_id = ?",
+                "demeter_ingredient.ingredient_id = demeter_component_of.base_ingredient_id "
+                "AND demeter_component_of.result_ingredient_id = ?",
                 hades::row<styx::int_type>(id.get_int<demeter::attr::ingredient_id>())
                 )
             );
@@ -61,13 +61,26 @@ namespace
     void save_(hades::connection& conn, demeter::ingredient& ingredient)
     {
         ingredient.save(conn);
+        styx::list components;
         for(styx::element& e : ingredient.components())
         {
             demeter::ingredient component(e);
+            components.append(
+                demeter::component_of(component.id(), ingredient.id())
+            );
             save_(conn, component);
-            demeter::component_of(component.id(), ingredient.id()).save(conn);
             e = component;
         }
+        demeter::component_of::overwrite_collection(
+            components,
+            hades::where(
+                "result_ingredient_id = ?",
+                hades::row<styx::int_type>(
+                    ingredient.copy_int<demeter::attr::ingredient_id>()
+                )
+            ),
+            conn
+        );
     }
 }
 
@@ -120,7 +133,7 @@ demeter::recipe demeter::db::get_recipe(
     hades::transaction transaction(conn, "demeter_db_get_recipe");
 
     demeter::recipe recipe = hades::get_by_id<demeter::recipe>(conn, id);
-    if(recipe.has_key("root_ingredient_id"))
+    if(recipe.has_key(attr::recipe_root_ingredient_id))
     {
         demeter::ingredient ingredient =
             db::get_ingredient(
@@ -161,7 +174,7 @@ void demeter::db::create(hades::connection& conn)
         " recipe_cook_time INTEGER, "
         " recipe_prep_time INTEGER, "
         " recipe_quantity INTEGER, "
-        " root_ingredient_id REFERENCES demeter_ingredient(ingredient_id) "
+        " recipe_root_ingredient_id REFERENCES demeter_ingredient(ingredient_id) "
         ") ",
         conn
     );
